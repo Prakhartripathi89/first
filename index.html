@@ -1,1 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Adventure - Educational Game for Kids</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Marker Felt', 'Arial', sans-serif;
+        }
 
+        body {
+            background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+
+        /* AdSense Banner Container */
+        .ad-banner-top {
+            width: 100%;
+            max-width: 728px;
+            height: 90px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 1px dashed #ccc;
+            color: #666;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .game-title {
+            color: #FF5722;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            background-color: #E1F5FE;
+            padding: 8px 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            margin-right: 5px;
+            font-size: 1.5rem;
+        }
+
+        .game-area {
+            background-color: #F5F5F5;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .character {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .math-problem {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #333;
+            text-align: center;
+        }
+
+        .answer-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .answer-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .answer-btn:hover {
+            transform: scale(1.1);
+            background-color: #45a049;
+        }
+
+        .feedback {
+            font-size: 1.5rem;
+            font-weight: bold;
+            height: 40px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .correct {
+            color: #4CAF50;
+            animation: pulse 0.5s;
+        }
+
+        .incorrect {
+            color: #F44336;
+            animation: shake 0.5s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .level-complete {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .level-complete h2 {
+            color: #FF9800;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .stars {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .next-level-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        .next-level-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        .refill-hearts-btn {
+            background-color: #E91E63;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: none;
+        }
+
+        .refill-hearts-btn:hover {
+            background-color: #C2185B;
+        }
+
+        .refill-hearts-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .start-screen h2 {
+            color: #3F51B5;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .start-screen p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .start-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+
+        .start-btn:hover {
+            background-color: #45a049;
+        }
+
+        .continue-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+
+        .continue-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        .reset-btn {
+            background-color: #F44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        .reset-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        /* AdSense Banner Container */
+        .ad-banner-bottom {
+            width: 100%;
+            max-width: 728px;
+            height: 90px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            border: 1px dashed #ccc;
+            color: #666;
+        }
+
+        /* Star Counter */
+        .star-counter {
+            display: flex;
+            align-items: center;
+            background-color: #FFF9C4;
+            padding: 8px 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Game Info Section */
+        .game-info {
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info-title {
+            color: #3F51B5;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .info-section {
+            margin-bottom: 20px;
+        }
+
+        .info-section h3 {
+            color: #4CAF50;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-section h3 .icon {
+            margin-right: 10px;
+            font-size: 1.6rem;
+        }
+
+        .info-section p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        .info-section ul {
+            padding-left: 30px;
+            margin-top: 10px;
+        }
+
+        .info-section li {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            background-color: #E1F5FE;
+            padding: 8px 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-icon {
+            margin-right: 8px;
+            font-size: 1.3rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .game-title {
+                font-size: 2rem;
+            }
+            
+            .math-problem {
+                font-size: 2rem;
+            }
+            
+            .answer-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .ad-banner-top, .ad-banner-bottom {
+                height: 50px;
+            }
+            
+            .game-stats {
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }
+            
+            .badges {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .start-btn, .continue-btn {
+                font-size: 1.3rem;
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Ad Banner -->
+    <div class="ad-banner-top">
+        AdSense Banner (728x90)
+    </div>
+
+    <div class="game-container">
+        <div class="game-header">
+            <h1 class="game-title">Math Adventure</h1>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat-item">
+                <span class="stat-icon">⭐</span>
+                <span id="score">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🏆</span>
+                <span id="level">1</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">❤️</span>
+                <span id="lives">3</span>
+            </div>
+            <div class="star-counter">
+                <span class="stat-icon">✨</span>
+                <span id="stars">0</span>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <!-- Start Screen -->
+            <div id="start-screen" class="start-screen">
+                <h2>Welcome to Math Adventure!</h2>
+                <p>Help our hero solve math problems to complete the adventure!</p>
+                <p>Use stars to refill hearts when you need help!</p>
+                <div id="start-buttons">
+                    <button id="start-btn" class="start-btn">New Game</button>
+                    <button id="continue-btn" class="continue-btn" style="display: none;">Continue Game</button>
+                </div>
+                <button id="reset-btn" class="reset-btn" style="display: none;">Reset Progress</button>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="game-screen" style="display: none;">
+                <div class="character" id="character">🚀</div>
+                <div class="math-problem" id="math-problem">5 + 3 = ?</div>
+                <div class="answer-options" id="answer-options">
+                    <button class="answer-btn" data-answer="6">6</button>
+                    <button class="answer-btn" data-answer="7">7</button>
+                    <button class="answer-btn" data-answer="8">8</button>
+                    <button class="answer-btn" data-answer="9">9</button>
+                </div>
+                <div class="feedback" id="feedback"></div>
+            </div>
+
+            <!-- Level Complete Screen -->
+            <div id="level-complete" class="level-complete">
+                <h2>Level Complete!</h2>
+                <div class="stars" id="stars-display">⭐⭐⭐</div>
+                <p id="level-score">You scored 30 points!</p>
+                <button id="next-level-btn" class="next-level-btn">Next Level</button>
+                <button id="refill-hearts-btn" class="refill-hearts-btn">Refill Hearts (3 Stars)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Info Section -->
+    <div class="game-info">
+        <div class="info-header">
+            <h2 class="info-title">About Math Adventure</h2>
+        </div>
+        
+        <div class="badges">
+            <div class="badge">
+                <span class="badge-icon">👶</span>
+                <span>Ages 6-8</span>
+            </div>
+            <div class="badge">
+                <span class="badge-icon">🧮</span>
+                <span>Mathematics</span>
+            </div>
+            <div class="badge">
+                <span class="badge-icon">🎓</span>
+                <span>Educational</span>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3><span class="icon">🎯</span>Who is this game for?</h3>
+            <p>Math Adventure is designed for children aged 6-8 years old (1st-3rd grade) who are learning basic math skills. The game provides a fun and engaging way to practice addition, subtraction, multiplication, and division at an age-appropriate level.</p>
+        </div>
+        
+        <div class="info-section">
+            <h3><span class="icon">📚</span>Educational Purpose</h3>
+            <p>This game helps children develop essential math skills while having fun. Learning objectives include:</p>
+            <ul>
+                <li>Master basic arithmetic operations</li>
+                <li>Improve mental math abilities</li>
+                <li>Build problem-solving skills</li>
+                <li>Develop concentration and focus</li>
+                <li>Gain confidence in mathematics</li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h3><span class="icon">🎮</span>How to Play</h3>
+            <p>Solve math problems by selecting the correct answer from four options. Each level has 5 problems to solve. You start with 3 hearts and lose one for each wrong answer. Earn stars based on your performance and use them to refill your hearts when needed!</p>
+        </div>
+        
+        <div class="info-section">
+            <h3><span class="icon">🌟</span>Key Features</h3>
+            <ul>
+                <li>19+ levels with progressive difficulty</li>
+                <li>Four types of math operations: addition, subtraction, multiplication, and division</li>
+                <li>Star currency system to refill hearts</li>
+                <li>Progress saving - your game is saved automatically!</li>
+                <li>Colorful characters that change as you progress</li>
+                <li>Immediate feedback on answers</li>
+                <li>No personal information collection</li>
+                <li>Works on all devices without installation</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bottom Ad Banner -->
+    <div class="ad-banner-bottom">
+        AdSense Banner (728x90)
+    </div>
+
+    <script>
+        // Game variables
+        let currentLevel = 1;
+        let score = 0;
+        let lives = 3;
+        let stars = 0;
+        let correctAnswers = 0;
+        let problemsInLevel = 5;
+        let currentProblem = {};
+        let isAnswering = false;
+        const maxLives = 3;
+        const starCostForRefill = 3;
+        const storageKey = 'mathAdventureProgress';
+
+        // DOM elements
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const levelCompleteScreen = document.getElementById('level-complete');
+        const startBtn = document.getElementById('start-btn');
+        const continueBtn = document.getElementById('continue-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const nextLevelBtn = document.getElementById('next-level-btn');
+        const refillHeartsBtn = document.getElementById('refill-hearts-btn');
+        const mathProblem = document.getElementById('math-problem');
+        const answerOptions = document.getElementById('answer-options');
+        const feedback = document.getElementById('feedback');
+        const scoreElement = document.getElementById('score');
+        const levelElement = document.getElementById('level');
+        const livesElement = document.getElementById('lives');
+        const starsElement = document.getElementById('stars');
+        const character = document.getElementById('character');
+        const starsDisplayElement = document.getElementById('stars-display');
+        const levelScoreElement = document.getElementById('level-score');
+
+        // Event listeners
+        startBtn.addEventListener('click', startNewGame);
+        continueBtn.addEventListener('click', continueGame);
+        resetBtn.addEventListener('click', resetProgress);
+        nextLevelBtn.addEventListener('click', nextLevel);
+        refillHeartsBtn.addEventListener('click', refillHearts);
+
+        // Answer buttons event delegation
+        answerOptions.addEventListener('click', function(e) {
+            if (e.target.classList.contains('answer-btn') && !isAnswering) {
+                checkAnswer(parseInt(e.target.dataset.answer));
+            }
+        });
+
+        // Save progress to local storage
+        function saveProgress() {
+            const progress = {
+                level: currentLevel,
+                score: score,
+                lives: lives,
+                stars: stars
+            };
+            localStorage.setItem(storageKey, JSON.stringify(progress));
+        }
+
+        // Load progress from local storage
+        function loadProgress() {
+            const savedProgress = localStorage.getItem(storageKey);
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                currentLevel = progress.level;
+                score = progress.score;
+                lives = progress.lives;
+                stars = progress.stars;
+                updateUI();
+                return true;
+            }
+            return false;
+        }
+
+        // Reset progress
+        function resetProgress() {
+            localStorage.removeItem(storageKey);
+            currentLevel = 1;
+            score = 0;
+            lives = 3;
+            stars = 0;
+            updateUI();
+            
+            // Update start screen buttons
+            startBtn.style.display = 'inline-block';
+            continueBtn.style.display = 'none';
+            resetBtn.style.display = 'none';
+        }
+
+        // Initialize the game
+        function initGame() {
+            if (loadProgress()) {
+                // There is saved progress
+                startBtn.style.display = 'inline-block';
+                continueBtn.style.display = 'inline-block';
+                resetBtn.style.display = 'inline-block';
+            } else {
+                // No saved progress
+                startBtn.style.display = 'inline-block';
+                continueBtn.style.display = 'none';
+                resetBtn.style.display = 'none';
+            }
+        }
+
+        // Start a new game
+        function startNewGame() {
+            resetProgress();
+            startGame();
+        }
+
+        // Continue saved game
+        function continueGame() {
+            startGame();
+        }
+
+        // Start the game
+        function startGame() {
+            startScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            resetLevel();
+            generateProblem();
+        }
+
+        // Reset level variables
+        function resetLevel() {
+            correctAnswers = 0;
+            updateUI();
+            updateRefillButton();
+        }
+
+        // Generate a math problem based on current level
+        function generateProblem() {
+            isAnswering = false;
+            feedback.textContent = '';
+            feedback.className = 'feedback';
+            
+            let num1, num2, operation, answer;
+            
+            // Adjust difficulty based on level with more gradual progression
+            if (currentLevel <= 2) {
+                // Levels 1-2: Simple addition (numbers 1-10)
+                num1 = Math.floor(Math.random() * 10) + 1;
+                num2 = Math.floor(Math.random() * 10) + 1;
+                operation = '+';
+                answer = num1 + num2;
+            } else if (currentLevel <= 4) {
+                // Levels 3-4: Simple subtraction (numbers 1-10, result is positive)
+                num1 = Math.floor(Math.random() * 10) + 1;
+                num2 = Math.floor(Math.random() * num1) + 1;
+                operation = '-';
+                answer = num1 - num2;
+            } else if (currentLevel <= 6) {
+                // Levels 5-6: Addition with numbers up to 20
+                num1 = Math.floor(Math.random() * 15) + 5;
+                num2 = Math.floor(Math.random() * 15) + 5;
+                operation = '+';
+                answer = num1 + num2;
+            } else if (currentLevel <= 8) {
+                // Levels 7-8: Subtraction with numbers up to 20
+                num1 = Math.floor(Math.random() * 15) + 5;
+                num2 = Math.floor(Math.random() * num1) + 1;
+                operation = '-';
+                answer = num1 - num2;
+            } else if (currentLevel <= 10) {
+                // Levels 9-10: Simple multiplication (1-5 times tables)
+                num1 = Math.floor(Math.random() * 5) + 1;
+                num2 = Math.floor(Math.random() * 5) + 1;
+                operation = '×';
+                answer = num1 * num2;
+            } else if (currentLevel <= 12) {
+                // Levels 11-12: Multiplication (1-10 times tables)
+                num1 = Math.floor(Math.random() * 10) + 1;
+                num2 = Math.floor(Math.random() * 10) + 1;
+                operation = '×';
+                answer = num1 * num2;
+            } else if (currentLevel <= 14) {
+                // Levels 13-14: Two-digit multiplication (10-20 times 1-10)
+                num1 = Math.floor(Math.random() * 11) + 10;
+                num2 = Math.floor(Math.random() * 10) + 1;
+                operation = '×';
+                answer = num1 * num2;
+            } else if (currentLevel <= 16) {
+                // Levels 15-16: Simple division (results are whole numbers)
+                num2 = Math.floor(Math.random() * 5) + 1;
+                answer = Math.floor(Math.random() * 10) + 1;
+                num1 = num2 * answer;
+                operation = '÷';
+            } else if (currentLevel <= 18) {
+                // Levels 17-18: Division (results are whole numbers)
+                num2 = Math.floor(Math.random() * 10) + 1;
+                answer = Math.floor(Math.random() * 10) + 1;
+                num1 = num2 * answer;
+                operation = '÷';
+            } else {
+                // Levels 19+: Mixed operations with higher difficulty
+                const operationType = Math.floor(Math.random() * 4);
+                
+                switch(operationType) {
+                    case 0: // Addition
+                        num1 = Math.floor(Math.random() * 20) + 10;
+                        num2 = Math.floor(Math.random() * 20) + 10;
+                        operation = '+';
+                        answer = num1 + num2;
+                        break;
+                    case 1: // Subtraction
+                        num1 = Math.floor(Math.random() * 20) + 20;
+                        num2 = Math.floor(Math.random() * num1) + 1;
+                        operation = '-';
+                        answer = num1 - num2;
+                        break;
+                    case 2: // Multiplication
+                        num1 = Math.floor(Math.random() * 11) + 10;
+                        num2 = Math.floor(Math.random() * 11) + 10;
+                        operation = '×';
+                        answer = num1 * num2;
+                        break;
+                    case 3: // Division
+                        num2 = Math.floor(Math.random() * 12) + 1;
+                        answer = Math.floor(Math.random() * 12) + 1;
+                        num1 = num2 * answer;
+                        operation = '÷';
+                        break;
+                }
+            }
+            
+            currentProblem = {
+                num1: num1,
+                num2: num2,
+                operation: operation,
+                answer: answer
+            };
+            
+            // Display the problem
+            mathProblem.textContent = `${num1} ${operation} ${num2} = ?`;
+            
+            // Generate answer options
+            generateAnswerOptions(answer);
+            
+            // Change character based on level
+            updateCharacter();
+        }
+
+        // Generate answer options with one correct and three incorrect
+        function generateAnswerOptions(correctAnswer) {
+            // Clear previous options
+            answerOptions.innerHTML = '';
+            
+            // Create an array with the correct answer
+            const options = [correctAnswer];
+            
+            // Generate incorrect answers
+            while (options.length < 4) {
+                // Generate a wrong answer that's close to the correct one
+                let offset = Math.floor(Math.random() * 5) + 1;
+                let wrongAnswer;
+                
+                // Adjust offset based on the size of the correct answer
+                if (correctAnswer > 50) {
+                    offset = Math.floor(Math.random() * 11) + 5;
+                } else if (correctAnswer > 20) {
+                    offset = Math.floor(Math.random() * 8) + 3;
+                }
+                
+                if (Math.random() > 0.5) {
+                    wrongAnswer = correctAnswer + offset;
+                } else {
+                    wrongAnswer = Math.max(0, correctAnswer - offset);
+                }
+                
+                // Make sure it's not already in the options array
+                if (!options.includes(wrongAnswer)) {
+                    options.push(wrongAnswer);
+                }
+            }
+            
+            // Shuffle the options
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            
+            // Create buttons for each option
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.classList.add('answer-btn');
+                button.textContent = option;
+                button.dataset.answer = option;
+                answerOptions.appendChild(button);
+            });
+        }
+
+        // Check if the answer is correct
+        function checkAnswer(selectedAnswer) {
+            isAnswering = true;
+            
+            if (selectedAnswer === currentProblem.answer) {
+                // Correct answer
+                feedback.textContent = 'Correct! Well done!';
+                feedback.className = 'feedback correct';
+                score += 10;
+                correctAnswers++;
+                
+                // Add a little celebration animation
+                character.style.animation = 'none';
+                setTimeout(() => {
+                    character.style.animation = 'bounce 2s infinite';
+                }, 10);
+                
+                // Check if level is complete
+                if (correctAnswers >= problemsInLevel) {
+                    setTimeout(() => {
+                        levelComplete();
+                    }, 1500);
+                } else {
+                    // Move to next problem
+                    setTimeout(() => {
+                        generateProblem();
+                    }, 1500);
+                }
+            } else {
+                // Incorrect answer
+                feedback.textContent = 'Try again!';
+                feedback.className = 'feedback incorrect';
+                lives--;
+                
+                // Check if game over
+                if (lives <= 0) {
+                    setTimeout(() => {
+                        gameOver();
+                    }, 1500);
+                } else {
+                    // Allow another attempt
+                    setTimeout(() => {
+                        isAnswering = false;
+                        feedback.textContent = '';
+                        feedback.className = 'feedback';
+                    }, 1500);
+                }
+            }
+            
+            updateUI();
+            updateRefillButton();
+            saveProgress();
+        }
+
+        // Update UI elements
+        function updateUI() {
+            scoreElement.textContent = score;
+            levelElement.textContent = currentLevel;
+            livesElement.textContent = lives;
+            starsElement.textContent = stars;
+        }
+
+        // Update the refill hearts button state
+        function updateRefillButton() {
+            if (lives < maxLives && stars >= starCostForRefill) {
+                refillHeartsBtn.style.display = 'inline-block';
+                refillHeartsBtn.disabled = false;
+            } else if (lives < maxLives && stars < starCostForRefill) {
+                refillHeartsBtn.style.display = 'inline-block';
+                refillHeartsBtn.disabled = true;
+                refillHeartsBtn.textContent = `Refill Hearts (${starCostForRefill} Stars)`;
+            } else {
+                refillHeartsBtn.style.display = 'none';
+            }
+        }
+
+        // Refill hearts using stars
+        function refillHearts() {
+            if (stars >= starCostForRefill && lives < maxLives) {
+                stars -= starCostForRefill;
+                lives = maxLives;
+                updateUI();
+                updateRefillButton();
+                saveProgress();
+                
+                // Show feedback
+                feedback.textContent = 'Hearts refilled!';
+                feedback.className = 'feedback correct';
+                
+                setTimeout(() => {
+                    feedback.textContent = '';
+                    feedback.className = 'feedback';
+                }, 2000);
+            }
+        }
+
+        // Update character based on level
+        function updateCharacter() {
+            const characters = ['🚀', '🚁', '🛸', '✈️', '🚂', '🚗', '🚢', '🚤', '🚲', '🏍️', '🛵', '🚒', '🚑', '🚓', '🚚', '🚛', '🚜', '🦸', '🧙', '🧚'];
+            character.textContent = characters[(currentLevel - 1) % characters.length];
+        }
+
+        // Level complete
+        function levelComplete() {
+            gameScreen.style.display = 'none';
+            levelCompleteScreen.style.display = 'block';
+            
+            // Calculate stars based on performance
+            const starCount = Math.min(3, Math.floor((correctAnswers / problemsInLevel) * 3) + 1);
+            starsDisplayElement.textContent = '⭐'.repeat(starCount);
+            
+            // Add stars to the star currency
+            stars += starCount;
+            
+            // Bonus points for completing the level
+            const levelScore = correctAnswers * 10 + (starCount * 5);
+            score += levelScore;
+            levelScoreElement.textContent = `You scored ${levelScore} points this level!`;
+            
+            updateUI();
+            updateRefillButton();
+            saveProgress();
+        }
+
+        // Move to next level
+        function nextLevel() {
+            currentLevel++;
+            levelCompleteScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            resetLevel();
+            generateProblem();
+            saveProgress();
+        }
+
+        // Game over
+        function gameOver() {
+            gameScreen.style.display = 'none';
+            levelCompleteScreen.style.display = 'block';
+            levelCompleteScreen.querySelector('h2').textContent = 'Game Over!';
+            starsDisplayElement.textContent = '😢';
+            levelScoreElement.textContent = `Final Score: ${score} points`;
+            nextLevelBtn.textContent = 'Play Again';
+            nextLevelBtn.onclick = function() {
+                currentLevel = 1;
+                score = 0;
+                lives = 3;
+                stars = 0;
+                nextLevelBtn.textContent = 'Next Level';
+                nextLevelBtn.onclick = nextLevel;
+                levelCompleteScreen.style.display = 'none';
+                startScreen.style.display = 'block';
+                saveProgress();
+            };
+            saveProgress();
+        }
+
+        // Save progress when the page is about to unload
+        window.addEventListener('beforeunload', function() {
+            saveProgress();
+        });
+
+        // Initialize the game when the page loads
+        window.addEventListener('load', function() {
+            initGame();
+        });
+    </script>
+</body>
+</html>
